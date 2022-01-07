@@ -3,6 +3,14 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
+st.set_page_config(
+    page_title="Tweet harassement detection",  # => Quick reference - Streamlit
+    page_icon="🤖",
+    layout="wide",  # wide
+    initial_sidebar_state="auto",
+    menu_items={"About": 'lol'})  # collapsed
+
+
 st.markdown("""
             # Harassement tweets detector
             ##       --O-O--
@@ -42,3 +50,33 @@ if st.button('Predict'):
     st.write("Let's predict!")
 else:
     st.write('Click to predict!')
+
+
+# Image Background
+
+import base64
+
+@st.cache
+def load_image(path):
+    with open(path, 'rb') as f:
+        data = f.read()
+    encoded = base64.b64encode(data).decode()
+    return encoded
+
+
+def background_image_style(path):
+    encoded = load_image(path)
+    style = f'''
+    <style>
+    .stApp {{
+        background-image: url("data:image/png;base64,{encoded}");
+        background-size: cover;
+    }}
+    </style>
+    '''
+    return style
+
+
+image_path = '/home/romain/code/romainattie/inappropriate_tweets_webapp/images/twit.jpeg'
+
+st.write(background_image_style(image_path), unsafe_allow_html=True)
