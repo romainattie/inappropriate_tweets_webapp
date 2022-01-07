@@ -3,21 +3,42 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-st.markdown("""# This is a header
-## This is a sub header
-This is text""")
+st.markdown("""
+            # Harassement tweets detector
+            ##       --O-O--
+            This is text""")
 
-df = pd.DataFrame({
-    'first column': list(range(1, 11)),
-    'second column': np.arange(10, 101, 10)
-})
+# Tweet input
 
-# this slider allows the user to select a number of lines
-# to display in the dataframe
-# the selected value is returned by st.slider
-line_count = st.slider('Select a line count', 1, 10, 3)
+txt = st.text_area(
+    'Text to analyze', '''
+    Enter the tweet here...
+    ''')
 
-# and used in order to select the displayed lines
-head_df = df.head(line_count)
+st.write('Length:', len(txt))
+st.text('')
 
-head_df
+# Model input
+
+@st.cache
+def get_select_box_data():
+
+    return pd.DataFrame({
+        'Pipeline': ['LogReg', 'XGBoost', 'Bernoulli']
+    })
+
+
+df = get_select_box_data()
+
+option = st.selectbox('Select a model', df['Pipeline'])
+st.write('The model chosen is', option)
+st.text('')
+
+# Enter Button
+
+if st.button('Predict'):
+    # print is visible in the server output, not in the page
+    print('button clicked!')
+    st.write("Let's predict!")
+else:
+    st.write('Click to predict!')
