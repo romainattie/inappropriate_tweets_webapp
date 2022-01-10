@@ -6,7 +6,7 @@ import pandas as pd
 st.set_page_config(
     page_title="Tweet harassement detection",  # => Quick reference - Streamlit
     page_icon="🤖",
-    layout="wide",  # wide
+    layout="centered",  # wide
     initial_sidebar_state="auto",
     menu_items={"About": 'lol'})  # collapsed
 
