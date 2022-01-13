@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import requests
 from streamlit.elements.legacy_data_frame import CSSStyle
-from pytwitter import Api
+from twitter import Api
 from PIL import Image
 from st_aggrid import AgGrid
 
