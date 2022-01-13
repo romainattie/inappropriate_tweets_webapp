@@ -148,19 +148,14 @@ if center_button[2].button('Enter'):
     for tx in tweets_list:
         requete = URL_API + f'/predict?text={tx}'
         response = requests.get(requete).json()
-        predi.append(response['Result'])
+        result_pred = round(response['Result'], 3)
+        predi.append(result_pred)
 
 
     f = {'Tweets': tweets_list, 'Prediction': predi}
     full = pd.DataFrame(f)
-    df = AgGrid(full, height=500, fit_columns_on_grid_load=True)
-    st.write(df)
+    AgGrid(full, height=370, fit_columns_on_grid_load=False,gridOptions=None)
 
-    # for pred in predi:
-    #     if predi > 0.5:
-    #         st.write('Hatred : ' + predi)
-    #     else:
-    #         st.write('No hatred : ' + predi)
 
 else:
     pass
