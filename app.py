@@ -132,6 +132,7 @@ predi = []
 if center_button[2].button('Enter'):
     # print is visible in the server output, not in the page
     print('button clicked!')
+    st.markdown('''#### Last ten tweets''')
     if len(username) > 0:
         tweets_list = get_tweets(username)
         st.write(tweets_list)
@@ -145,6 +146,7 @@ if center_button[2].button('Enter'):
         tweets_list = []
         st.text('Please, fill in a field.')
 
+    st.markdown('''#### Overview of results''')
     for tx in tweets_list:
         requete = URL_API + f'/predict?text={tx}'
         response = requests.get(requete).json()
@@ -152,7 +154,7 @@ if center_button[2].button('Enter'):
         predi.append(result_pred)
 
 
-    f = {'Tweets': tweets_list, 'Prediction': predi}
+    f = {'Prediction': predi, 'Tweets': tweets_list}
     full = pd.DataFrame(f)
     AgGrid(full, height=370, fit_columns_on_grid_load=False,gridOptions=None)
 
@@ -160,6 +162,7 @@ if center_button[2].button('Enter'):
 else:
     pass
 
+st.markdown('''### Single tweet analysis''')
 
 columns_2 = st.columns(2)
 
@@ -173,25 +176,75 @@ st.write('Length:', len(txt))
 
 # Model input
 
-model = columns_2[1].radio('Select a model', ('TfidfVectorizer + Logistic Regression', 'Sentence Transformer + Neuron Network'))
+model = columns_2[1].radio('Select a model',
+                           ('Machine Learning', 'Deep Learning'))
 
-st.write(model)
+st.write(f'Model used: {model}')
 
-if model == 'TfidfVectorizer + Logistic Regression':
-    columns_2[1].write('▶ TfidfVectorizer + Logistic Regression')
+if model == 'Machine Learning':
+    columns_2[1].write('▶ Machine Learning')
     requete = URL_API + f'/predict?text={txt}'
 else :
-    columns_2[1].write('▶ Sentence Transformer + Neuron Network')
+    columns_2[1].write('▶ Deep Learning')
     requete = URL_API + f'/predict_deep?text={txt}'
 
 
 # Enter Button
 
+st.markdown("""
+<style>
+.result {
+    font-size:50px !important;
+    color: white;
+}
+.interpret {
+    font-size:20px !important;
+    color: white
+}
+.interpret_0 {
+    font-size:50px !important;
+    color: green
+}
+.interpret_1 {
+    font-size:50px !important;
+    color: red
+}
+.deep_l {
+    font-size:30px !important;
+    color: white
+}
+</style>
+""",
+            unsafe_allow_html=True)
+
+
+
 if st.button('Predict'):
     # print is visible in the server output, not in the page
     response = requests.get(requete).json()
     print('button clicked!')
-    st.write(response['Result'])
+    # columns_3[0].markdown(f"<p class='result'>Result: {round(response['Result'], 3)}</p>", unsafe_allow_html=True)
+
+    columns_3 = st.columns(2)
+
+    if model == 'Machine Learning':
+        columns_3[0].markdown(
+            f"<p class='result'>Result: {round(response['Result'], 3)}</p>",
+            unsafe_allow_html=True)
+        if response['Result'] < 0.5:
+            columns_3[1].write(
+                f"<p class='interpret'>Category: <p class='interpret_0'>No Hateful</p>",
+                unsafe_allow_html=True)
+        else:
+            columns_3[1].markdown(
+                f"<p class='interpret'>Category: <p class='interpret_1'>Hateful</p>",
+                unsafe_allow_html=True)
+    else:
+        st.markdown(
+            f"<p class='deep_l'>The Deep Learning model is under development...</p>",
+            unsafe_allow_html=True)
+
+    # st.write(response['Result'])
 else:
     st.write('Click to predict!')
 
