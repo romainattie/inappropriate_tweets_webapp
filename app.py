@@ -11,7 +11,7 @@ from st_aggrid import AgGrid
 from keys import keys
 
 api = Api(
-    **keys, tweet_mode='extended'
+    **keys
 )
 
 # URL_API = 'http://127.0.0.1:8000'
