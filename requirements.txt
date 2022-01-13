@@ -6,4 +6,4 @@ scikit-learn
 streamlit
 requests
 pytwitter
-st_aggrid
+streamlit-aggrid
