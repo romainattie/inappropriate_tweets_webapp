@@ -7,14 +7,15 @@ import requests
 from streamlit.elements.legacy_data_frame import CSSStyle
 from pytwitter import Api
 from PIL import Image
+from st_aggrid import AgGrid
 
 api = Api(
     bearer_token=
     "AAAAAAAAAAAAAAAAAAAAAMEfXwEAAAAAlfLjwzL3A2Wpvm1ZimVbuhfq%2Buc%3DtmacIQmzLm8xASCBwNQGCxubko15pClS05dUnfwk0kFs4UkHKm"
 )
 
-URL_API = 'http://127.0.0.1:8000'
-URL_API = 'https://tweetimage-ej5pl4pgra-ew.a.run.app/'
+# URL_API = 'http://127.0.0.1:8000'
+URL_API = 'https://tweet-image-ej5pl4pgra-ew.a.run.app'
 
 
 st.set_page_config(
@@ -130,18 +131,41 @@ def get_tweet_keyword(st):
 center_button = st.columns(5)
 
 # Button enter
+predi = []
 
 if center_button[2].button('Enter'):
     # print is visible in the server output, not in the page
     print('button clicked!')
     if len(username) > 0:
-        st.write(get_tweets(username))
+        tweets_list = get_tweets(username)
+        st.write(tweets_list)
     elif len(userid) > 0:
-        st.write(get_tweets_id(userid))
+        tweets_list = get_tweets_id(userid)
+        st.write(tweets_list)
     elif len(keyword) > 0:
-        st.write(get_tweet_keyword(keyword))
+        tweets_list = get_tweet_keyword(keyword)
+        st.write(tweets_list)
     else :
+        tweets_list = []
         st.text('Please, fill in a field.')
+
+    for tx in tweets_list:
+        requete = URL_API + f'/predict?text={tx}'
+        response = requests.get(requete).json()
+        predi.append(response['Result'])
+
+
+    f = {'Tweets': tweets_list, 'Prediction': predi}
+    full = pd.DataFrame(f)
+    df = AgGrid(full, height=500, fit_columns_on_grid_load=True)
+    st.write(df)
+
+    # for pred in predi:
+    #     if predi > 0.5:
+    #         st.write('Hatred : ' + predi)
+    #     else:
+    #         st.write('No hatred : ' + predi)
+
 else:
     pass
 
@@ -164,16 +188,17 @@ st.write(model)
 
 if model == 'TfidfVectorizer + Logistic Regression':
     columns_2[1].write('▶ TfidfVectorizer + Logistic Regression')
+    requete = URL_API + f'/predict?text={txt}'
 else :
     columns_2[1].write('▶ Sentence Transformer + Neuron Network')
+    requete = URL_API + f'/predict_deep?text={txt}'
 
 
 # Enter Button
 
-response = requests.get(URL_API + f'predict?text={txt}').json()
-
 if st.button('Predict'):
     # print is visible in the server output, not in the page
+    response = requests.get(requete).json()
     print('button clicked!')
     st.write(response['Result'])
 else:
