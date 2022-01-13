@@ -1,3 +1,15 @@
+# path of the file to upload to gcp (the path of the file should be absolute or should match the directory where the make command is run)
+# LOCAL_PATH=PATH_TO_FILE_train_1k.csv
+
+# project id
+PROJECT_ID=tweet-detection
+DOCKER_IMAGE_NAME=tweet_image
+
+# bucket name
+BUCKET_NAME=wagon-data-779-attie
+
+REGION=europe-west1
+
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
