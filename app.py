@@ -73,10 +73,6 @@ def background_image_style(path):
 
 
 image_path = 'images/twit_2.jpeg'
-image_noir_path = '/home/romain/code/romainattie/inappropriate_tweets_webapp/images/noir_2.jpg'
-image_noir = Image.open(
-    '/home/romain/code/romainattie/inappropriate_tweets_webapp/images/noir_2.jpg'
-)
 
 
 # Title
