@@ -8,10 +8,10 @@ from streamlit.elements.legacy_data_frame import CSSStyle
 from twitter import Api
 from PIL import Image
 from st_aggrid import AgGrid
+from keys import keys
 
 api = Api(
-    bearer_token=
-    "AAAAAAAAAAAAAAAAAAAAAMEfXwEAAAAAlfLjwzL3A2Wpvm1ZimVbuhfq%2Buc%3DtmacIQmzLm8xASCBwNQGCxubko15pClS05dUnfwk0kFs4UkHKm"
+    **keys, tweet_mode='extended'
 )
 
 # URL_API = 'http://127.0.0.1:8000'
