@@ -177,9 +177,12 @@ st.write('Length:', len(txt))
 # Model input
 
 model = columns_2[1].radio('Select a model',
-                           ('Machine Learning', 'Deep Learning'))
+                           ('Machine Learning', 'Deep Learning (In development)'))
 
-st.write(f'Model used: {model}')
+if model == 'Machine Learning':
+    st.write(f'Model used: {model}')
+else:
+    st.write(f'Model Deep Learning still in development.')
 
 if model == 'Machine Learning':
     columns_2[1].write('▶ Machine Learning')
@@ -233,7 +236,7 @@ if st.button('Predict'):
             unsafe_allow_html=True)
         if response['Result'] < 0.5:
             columns_3[1].write(
-                f"<p class='interpret'>Category: <p class='interpret_0'>No Hateful</p>",
+                f"<p class='interpret'>Category: <p class='interpret_0'>Not Hateful</p>",
                 unsafe_allow_html=True)
         else:
             columns_3[1].markdown(
