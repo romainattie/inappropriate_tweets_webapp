@@ -7,3 +7,4 @@ streamlit
 requests
 python-twitter-v2
 streamlit-aggrid
+pytwitter
